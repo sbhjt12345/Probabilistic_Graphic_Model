@@ -39,7 +39,21 @@ for i = 1:size(E, 1),
             % Hint: You might find it helpful to use IndexToAssignment
             %       and SetValueOfAssignment
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-            
+            % now we know F(j).var(indx) = v, we need to change all the corresponding assignment 
+            % of 
+            for k = 1:length(F(j).val),
+                assign = IndexToAssignment(k,F(j).card);
+                %since we know var[indx] is v, we need to set it to zero
+                %know that assign[indx] is var[indx]
+                if (assign(indx) ~=x )  %not consistent with, set its val to zero
+                    F(j) = SetValueOfAssignment(F(j),assign,0);
+                end
+            end
+
+
+
+
+
             %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 				% Check validity of evidence / resulting factor
