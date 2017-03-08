@@ -28,6 +28,10 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 M = struct('var', [], 'card', [], 'val', []); % Returns empty factor. Change this.
+FF = ComputeJointDistribution(F);
+newF = ObserveEvidence(FF,E);
+M = FactorMarginalization(newF,setdiff(newF.var,V)); %which means we need to sum up anything not in V?
+M.val = M.val/sum(M.val);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
