@@ -58,8 +58,32 @@ genotypeFactor = struct('var', [], 'card', [], 'val', []);
 
 % Fill in genotypeFactor.var.  This should be a 1-D row vector.
 % Fill in genotypeFactor.card.  This should be a 1-D row vector.
-
+m = size(genotypesToAlleles,1);
+genotypeFactor.card = [m,m,m];
+genotypeFactor.var = [genotypeVarChild, genotypeVarParentOne, genotypeVarParentTwo];
 genotypeFactor.val = zeros(1, prod(genotypeFactor.card));
+% Replace the zeros in genotypeFactor.val with the correct values.
+for i = 1:m
+	ia = genotypesToAlleles(i,:);  %like [F,f] 
+	for j = 1:m
+		ja = genotypesToAlleles(j,:);  % like [f,F]
+
+		% fF and Ff will point to same ID of geno I guess
+		d1=AssignmentToIndex([allelesToGenotypes(ia(1),ja(1)),i,j],genotypeFactor.card);
+		d2=AssignmentToIndex([allelesToGenotypes(ia(1),ja(2)),i,j],genotypeFactor.card);
+		d3=AssignmentToIndex([allelesToGenotypes(ia(2),ja(1)),i,j],genotypeFactor.card);
+		d4=AssignmentToIndex([allelesToGenotypes(ia(2),ja(2)),i,j],genotypeFactor.card);
+		genotypeFactor.val(d1)+=1;
+		genotypeFactor.val(d2)+=1;
+		genotypeFactor.val(d3)+=1;
+		genotypeFactor.val(d4)+=1;
+	end
+end
+genotypeFactor.val = genotypeFactor.val/4;
+
+
+
+
 % Replace the zeros in genotypeFactor.val with the correct values.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
