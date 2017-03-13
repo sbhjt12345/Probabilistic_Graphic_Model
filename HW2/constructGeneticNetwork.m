@@ -55,9 +55,37 @@ numPeople = length(pedigree.names);
 % factor for each person's genotype and a separate factor for each person's 
 % phenotype.  Note that the order of the factors in the list does not
 % matter.
-factorList(2*numPeople) = struct('var', [], 'card', [], 'val', []);
+factorList(2*numPeople) = struct('var', [], 'card', [], 'val', []); %2*numpeople groups of structure
 
 numAlleles = length(alleleFreqs); % Number of alleles
+topology = ones(1,numPeople);
+array = [];
+for i=1:numPeople,
+	arrayPar = pedigree.parents(i,:);
+	if (arrayPar(1)==0),
+		factorList(i) = genotypeGivenAlleleFreqsFactor(alleleFreqs,i);
+	    topology(i) = 0;
+	end
+end
+
+while (sum(topology) ~= 0),
+	for i=1:numPeople,
+		binary = topology(i);
+		if (binary == 1),
+			dudeParent = pedigree.parents(i,:);
+			papaisalone = topology(dudeParent(1));
+			mamaisalone = topology(dudeParent(2));
+			if papaisalone==0 && mamaisalone==0,
+				factorList(i) = genotypeGivenParentsGenotypesFactor(numAlleles,i,dudeParent(1),dudeParent(2));
+				topology(i) = 0;
+			end
+		end
+	end
+end
+
+for i=1:numPeople;
+	factorList(numPeople+i) = phenotypeGivenGenotypeFactor(alphaList,i,numPeople+i);
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %INSERT YOUR CODE HERE
