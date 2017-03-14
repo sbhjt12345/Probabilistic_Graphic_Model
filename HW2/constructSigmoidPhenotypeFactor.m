@@ -39,6 +39,7 @@ function phenotypeFactor = constructSigmoidPhenotypeFactor(alleleWeights, geneCo
 %   the FULL CPD with no evidence observed)
 
 phenotypeFactor = struct('var', [], 'card', [], 'val', []);
+num = length(alleleWeights{1});  % how many result a allele can lead to
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % INSERT YOUR CODE HERE
@@ -47,8 +48,25 @@ phenotypeFactor = struct('var', [], 'card', [], 'val', []);
 
 % Fill in phenotypeFactor.var.  This should be a 1-D row vector.
 % Fill in phenotypeFactor.card.  This should be a 1-D row vector.
-
+phenotypeFactor.var = [phenotypeVar, geneCopyVarOneList', geneCopyVarTwoList'];
+phenotypeFactor.card = [2,num,num,num,num];
 phenotypeFactor.val = zeros(1, prod(phenotypeFactor.card));
 % Replace the zeros in phentoypeFactor.val with the correct values.
+for i=1:prod(phenotypeFactor.card),
+	assignment = IndexToAssignment(i,phenotypeFactor.card);
+	%get gene
+	gene1 = [assignment(2),assignment(4)]; %gene1 copy1 and copy2
+	gene2 = [assignment(3),assignment(5)];
+	z = alleleWeights{1}(gene1(1)) + alleleWeights{1}(gene1(2)) + alleleWeights{2}(gene2(1)) + alleleWeights{2}(gene2(2));
+	prob = computeSigmoid(z);
+	if assignment(1)==1,
+
+	        phenotypeFactor.val(i) = prob;
+	else
+	      	phenotypeFactor.val(i) = 1-prob;
+	end   
+
+end   
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

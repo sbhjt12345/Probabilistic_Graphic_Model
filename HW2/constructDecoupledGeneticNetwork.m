@@ -73,6 +73,38 @@ factorList(3*numPeople) = struct('var', [], 'card', [], 'val', []);
 factorList(3*numPeople) = struct('var', [], 'card', [], 'val', []);
 
 numAlleles = length(alleleFreqs); % Number of alleles
+topology = ones(1,numPeople);
+for i=1:numPeople,
+	papa = pedigree.parents(i,1);
+    if papa==0,
+    	factorList(i) = childCopyGivenFreqsFactor(alleleFreqs,i);
+    	factorList(numPeople+i) = childCopyGivenFreqsFactor(alleleFreqs,numPeople+i);
+    	topology(i) = 0;
+    end
+end
+
+while (sum(topology) ~= 0),
+	for i=1:numPeople,
+		c = topology(i);
+		if (c==1),   %dude has parent, check if dude's parent has parent
+			dudePar = pedigree.parents(i,:);
+			papa = topology(dudePar(1));
+			mama = topology(dudePar(1));
+			if (papa==0 && mama==0),
+				%childCopyGivenParentalsFactor(numAlleles, geneCopyVarChild, geneCopyVarOne, geneCopyVarTwo)
+				factorList(i) = childCopyGivenParentalsFactor(numAlleles, i, dudePar(1), numPeople+dudePar(1));
+				factorList(numPeople + i) = childCopyGivenParentalsFactor(numAlleles,numPeople+i, dudePar(2), numPeople+dudePar(2));
+				topology(i) = 0;
+			end
+		end
+	end
+end
+
+for i=1:numPeople,
+%phenotypeGivenCopiesFactor(alphaList, numAlleles, geneCopyVarOne, geneCopyVarTwo, phenotypeVar)
+	factorList(2*numPeople+i) = phenotypeGivenCopiesFactor(alphaList,numAlleles,i,numPeople+i,numPeople*2+i);
+end
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % INSERT YOUR CODE HERE
