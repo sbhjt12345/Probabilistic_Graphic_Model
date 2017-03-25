@@ -32,4 +32,4 @@ HW2 - Genetic Inheritance
        - And the genetic network is just applying the above DS to a family tree
 
 
-HW3 - In process day4 - review materials
+HW3 - In process day4 - review materials and others
