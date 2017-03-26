@@ -6,6 +6,8 @@ HW1 - Intro to Bayesian Network
    - When an evidence is observe, reduce all the other assignment if evidence not holds
    - joint distribution
    - marginal over a given set of variables
+   
+   factorization is one way to represent a BN by its CPDs.
  
 HW2 - Genetic Inheritance
    - phenotypeGivenGenotypeMendelianFactor: output only be 0 or 1, meaning showing the physical trait or not
