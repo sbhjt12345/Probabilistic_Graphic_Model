@@ -25,8 +25,8 @@ factors = repmat(struct('var', [], 'card', [], 'val', []), n, 1);
 
 % Your code here:
 
-for i=1:n,
-	factors(i).val = [i];
+for i=1:n
+	factors(i).var = [i];
 	factors(i).card = imageModel.K;
 	factors(i).val = ComputeImageFactor(images(i).img,imageModel);
 end
