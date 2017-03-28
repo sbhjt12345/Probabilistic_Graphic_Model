@@ -23,7 +23,16 @@ if (length(allFactors) <= F)
 end
 
 % Your code here:
-factors = allFactors; %%% REMOVE THIS LINE
+n = length(allFactors);
+factors = repmat(struct('var', [], 'card', [], 'val', []), F, 1);
+sortarray = ones(n,1);
+for i=1:n,
+	sortarray(i) = allFactors(i).val(1);
+end
+[s,idx] = sort(sortarray,'descend');
+for i=1:F,
+	factors(i) = allFactors(idx(i));
+end
 
 end
 
