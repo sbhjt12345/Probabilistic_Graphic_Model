@@ -34,4 +34,10 @@ HW2 - Genetic Inheritance
        - And the genetic network is just applying the above DS to a family tree
 
 
-HW3 - In process day4 - review materials and others
+HW3 - Behind Schedule! Finish tmr
+       This HW implements simple OCR to do handwritting recognition.
+       The idea is the factor of (I,C) where I is the image of the character which is represented by a pixel marix, and C is the actual character. I is always observed; and another factor is (C(i),C(i+1)) which is the connection between adjacent characters.
+       
+      Compute Singleton Markov Network: (I,C) factor is the baseline for OCR. this matlab file implemented the job. Logistic Regression is used( as learned in machine learning course), but the code is not sth I familiar with in the ML course.
+      
+      Compute Pairwise factor: outputs the struct array containing all (C i,C i+1) factors
